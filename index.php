@@ -21,7 +21,7 @@
 <div class="col-lg-3">
 	 <div class="form-group">
 	 <label>Amount</label>
-	 <input class="form-control" type="number" placeholder="Amount">
+	 <input class="form-control" type="number" id="CURR_AMT" placeholder="Amount">
 	 </div>
 	 <div class="form-group">
 	 <label>Currency</label>
@@ -342,7 +342,7 @@
 	 
 	 <div class="form-group">
 	 <label>To</label>
-	 <select id="CURR_FR" class="form-control">
+	 <select id="CURR_TO" class="form-control">
         <option value="AED" >AED</option>
         
         <option value="AFN" >AFN</option>
@@ -665,18 +665,18 @@
 
 <script type="text/javascript">
  	function convertCurrency(){
-  	  const amount = 98;
-	  const from = "USD";
-	  const to = "PHP";
+  	  const amount = document.getElementById("CURR_AMT").value;
+	  const from = document.getElementById("CURR_FR").value;
+	  const to = document.getElementById("CURR_TO").value;
       const vars = "Amount="+amount+"&From="+from+"&To="+to;
-      const hr = new XMLHttpRequest();
+      var hr = new XMLHttpRequest();
       const url = "currencyconverterapi.php";
       hr.open("POST", url, true);
       hr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
       hr.onreadystatechange = function() {
         if (hr.readyState == 4 && hr.status == 200) {
-          var return_data = hr.responseText;
-		document.getElementById('convertmessage').Innerhtml = return_data;
+          let return_data = hr.responseText;
+		document.getElementById('convertmessage').innerHTML = to+": "+number_format(return_data);
             //console.log(return_data);
             
     }
@@ -684,6 +684,11 @@
   hr.send(vars);
   document.getElementById("convertmessage").innerHTML = "<i style='color:#8ab933;'>Converting.....</i>";
  }
+ 
+ function number_format(n) {
+        const parts=n.toString().split(".");
+        return parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",") + (parts[1] ? "." + parts[1] : "");
+    }
 </script>
 </body>
 
