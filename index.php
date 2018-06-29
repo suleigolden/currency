@@ -656,13 +656,35 @@
         <option value="ZMW" >ZMW</option>
 	 </select>
 	 </div>
-	 <button type="submit" class="btn btn-default">Convert</button>
+	 <button onClick="convertCurrency();" class="btn btn-default">Convert</button>
+	 <h3 id="convertmessage"></h3>
 </div>
 </div>
 </div>
 
 
-
+<script type="text/javascript">
+ 	function convertCurrency(){
+  	  const amount = 98;
+	  const from = "USD";
+	  const to = "PHP";
+      const vars = "Amount="+amount+"&From="+from+"&To="+to;
+      const hr = new XMLHttpRequest();
+      const url = "currencyconverterapi.php";
+      hr.open("POST", url, true);
+      hr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      hr.onreadystatechange = function() {
+        if (hr.readyState == 4 && hr.status == 200) {
+          var return_data = hr.responseText;
+		document.getElementById('convertmessage').Innerhtml = return_data;
+            //console.log(return_data);
+            
+    }
+  }
+  hr.send(vars);
+  document.getElementById("convertmessage").innerHTML = "<i style='color:#8ab933;'>Converting.....</i>";
+ }
+</script>
 </body>
 
 </html>
